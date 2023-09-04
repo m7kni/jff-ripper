@@ -10,10 +10,6 @@ from yt_dlp import YoutubeDL
 from bs4 import BeautifulSoup
 from pathlib import Path
 
-<<<<<<< HEAD
-
-=======
->>>>>>> 280c017 (initial update)
 import config
 from Class.JJFPost import JJFPost
 
@@ -101,40 +97,12 @@ def download_file(file_path, url):
         print(e)
 
 def save_video(post):
-<<<<<<< HEAD
-    """
-    This function is responsible for downloading and saving the videos.
-    """
-=======
->>>>>>> 280c017 (initial update)
     post.ext = 'mp4'
     post.prepdata()
 
     folder = create_directory_for_post(post)
     file_path = os.path.join(folder, post.title)
 
-<<<<<<< HEAD
-
-    if not config.overwrite_existing and os.path.exists(file_path):
-        print(f'Video: <<exists skip>>: {file_path}')
-
-        return
-
-    try:
-        video_url_data = post.post_soup.select('div.videoBlock a')[0].attrs['onclick']
-        video_url = json.loads(video_url_data.split(', ')[1])
-
-        post.url_vid = video_url.get('1080p', video_url.get('540p', ''))
-
-        ydl_opts = {
-            'outtmpl': file_path,
-        }
-        with YoutubeDL(ydl_opts) as ydl:
-            ydl.download([post.url_vid])  # download() expects a list of URLs.
-
-    except Exception as e:
-        print(e)
-=======
     if not config.overwrite_existing and os.path.exists(file_path):
         print(f'Video: <<exists skip>>: {file_path}')
         return False
@@ -166,7 +134,6 @@ def save_video(post):
 
     print(f"Download failed after {max_retries} attempts. Skipping...")
     return False
->>>>>>> 280c017 (initial update)
 
 
 def save_text(post):
@@ -208,12 +175,6 @@ def parse_and_save_content(html_content):
 
         if 'video' in class_values:
             post.type = 'video'
-<<<<<<< HEAD
-            save_video(post)
-            folder = create_directory_for_post(post)
-            file_path = os.path.join(folder, post.title)
-            add_metadata_to_video(file_path, post.title, post.name, post.post_date, post.full_text)
-=======
             video_saved = save_video(post)
             folder = create_directory_for_post(post)
             file_path = os.path.join(folder, post.title)
@@ -221,7 +182,6 @@ def parse_and_save_content(html_content):
                 add_metadata_to_video(file_path, post.title, post.name, post.post_date, post.full_text)
             else:
                 print(f"Skipping metadata addition for: {file_path}")
->>>>>>> 280c017 (initial update)
 
             if config.save_full_text:
                 save_text(post)
@@ -251,7 +211,3 @@ if __name__ == "__main__":
         else:
             parse_and_save_content(html_content)
             loop_count += 10
-<<<<<<< HEAD
-=======
-
->>>>>>> 280c017 (initial update)
