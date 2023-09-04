@@ -1,13 +1,3 @@
-<<<<<<< HEAD
-## Thing to download all content from someone's JustFor.Fans
-
-### Written in Python 3.8
-
-1. Install requirements
-    1. `pip install -r requirements.txt`
-    2. Install [ffmpeg](https://ffmpeg.org).
-2. Set configuration
-=======
 ## Thing to archive content from someone's JustFor.Fans
 
 ### Written in Python 3.8
@@ -22,7 +12,6 @@ The primary changes with this version are:
     1. Follow the Dockerfile if you don't want to use Docker
     2. Run `docker run -d --name jff -v /downloads:/downloads jff:latest 000000 1a1a1a1a1a1a1a1a` (where 000 is your UserID and 1a1a is your UserHash4 value) 
 2. To Configure
->>>>>>> 280c017 (initial update)
     1. `overwrite_existing` - will skip download if file exists
     2. `save_path` - destination folder - will save to same location as script folder if none provided
     3. `save_full_text` - will save text file with full description
@@ -31,11 +20,7 @@ The primary changes with this version are:
         * `post_date`
         * `post_id`
         * `desc`
-<<<<<<< HEAD
-2. Get UserID and UserHash values
-=======
 3. How to get UserID and UserHash values
->>>>>>> 280c017 (initial update)
     1.  Log into your JustFor.Fans account
     2.  Select performer's page
     3.  (in Chrome), hit F12 to open dev-console
