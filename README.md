@@ -1,7 +1,5 @@
 ## Thing to archive content from someone's JustFor.Fans
 
-### Written in Python 3.8
-
 With thanks to https://github.com/nichtmax/justfor.fans.ripper & https://github.com/whats-happening-rightnow/justfor.fans.ripper who made the initial versions this is forked from.
 
 The primary changes with this version are:
