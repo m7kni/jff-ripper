@@ -34,8 +34,11 @@ def save_photo(post):
     photos = post.post_soup.select('div.imageGallery.galleryLarge img.expandable')
 
     if len(photos) == 0:
-        photo_counter = -1
-        photos.append(post.post_soup.select('img.expandable')[0])
+        photo_expandable_list = post.post_soup.select('img.expandable')
+        if not photo_expandable_list:
+            print(f"No photos found for post {post.post_id}. Skipping...")
+            return
+        photos.append(photo_expandable_list[0])
 
     for img in photos:
         img_source = img.attrs.get('src', img.attrs.get('data-lazy', None))
@@ -59,11 +62,36 @@ def save_photo(post):
             continue
 
         photo_urls.append([file_path, img_source])
-
         photo_counter += 1
 
     for img in photo_urls:
-        download_file(img[0], img[1])  # Use a function to download the file, for better code readability
+        retry_count = 0
+        max_retries = 3
+        while retry_count < max_retries:
+            if download_file(img[0], img[1]):  # Use a function to download the file, for better code readability
+                break
+            retry_count += 1
+            print(f"Retrying download... {retry_count}/{max_retries}")
+
+        if retry_count == max_retries:
+            print(f"Download failed after {max_retries} attempts. Skipping...")
+
+def download_file(file_path, url):
+    """
+    This function downloads a file and saves it to the specified location.
+    """
+    print(f'Downloading: {file_path}')
+    print(f'From: {url}')
+
+    try:
+        response = requests.get(url, stream=True)
+        with open(file_path, 'wb') as out_file:
+            shutil.copyfileobj(response.raw, out_file)
+        del response
+        return True
+    except Exception as e:
+        print(e)
+        return False
 
 def add_metadata_to_video(video_path, title, artist, date, description):
     print(f'Adding metadata to: {video_path}')
@@ -81,22 +109,10 @@ def add_metadata_to_video(video_path, title, artist, date, description):
     os.remove(video_path)
     os.rename(video_path+'.tmp.mp4', video_path)
 
-def download_file(file_path, url):
-    """
-    This function downloads a file and saves it to the specified location.
-    """
-    print(f'Downloading: {file_path}')
-    print(f'From: {url}')
-
-    try:
-        response = requests.get(url, stream=True)
-        with open(file_path, 'wb') as out_file:
-            shutil.copyfileobj(response.raw, out_file)
-        del response
-    except Exception as e:
-        print(e)
-
 def save_video(post):
+    """
+    This function is responsible for downloading and saving the videos.
+    """
     post.ext = 'mp4'
     post.prepdata()
 
@@ -134,6 +150,7 @@ def save_video(post):
 
     print(f"Download failed after {max_retries} attempts. Skipping...")
     return False
+
 
 
 def save_text(post):
