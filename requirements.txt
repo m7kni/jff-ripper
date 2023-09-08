@@ -7,5 +7,5 @@ requests==2.31.0
 six==1.16.0
 soupsieve==2.2.1
 urllib3==1.26.5
-tqdm==4.65.0
+tqdm==4.66.1
 yt_dlp
