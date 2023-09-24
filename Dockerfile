@@ -8,7 +8,7 @@ WORKDIR /app
 COPY . /app
 
 # Install ffmpeg
-RUN apt-get update && apt-get install -y ffmpeg
+RUN apt-get -qq update && apt-get install --yes --no-install-recommends ffmpeg && apt-get -qq purge && apt-get -qq clean && rm -rf /var/lib/apt/lists/*
 
 # Install the dependencies mentioned in requirements.txt
 RUN pip install --trusted-host pypi.python.org -r requirements.txt
