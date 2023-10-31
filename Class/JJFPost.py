@@ -25,12 +25,13 @@ class JJFPost:
         self.post_soup = {}
 
     def prepdata(self):
+        print(f"Debug: Trying to parse date string: {self.post_date_str}")
+        
         try:
-            self.post_date = parse(self.post_date_str).strftime("%Y-%m-%d")
+            self.post_date = datetime.strptime(self.post_date_str, "%B %d, %Y, %I:%M %p").strftime("%Y-%m-%d")
         except Exception as e:
-            print(f"Warning: Could not parse date for post {self.post_id}. Using 'unknown_date' instead.")
-            random_str = ''.join(random.choices(string.ascii_uppercase + string.digits, k=3))
-            self.post_date = f"unknown_date_{random_str}"
+            print(f"Warning: Could not parse date for post {self.post_id}. Error: {e}. Using post ID as could not parse date.")
+        self.post_date = self.post_id
 
         self.desc = self.full_text[0:50].strip() + ('...' if len(self.full_text) > 45 else '')
         self.desc = re.sub(r'["|/|\:|?|$|!|<|>|~|`|(|)|@|#|$|%|^|&|*|\n|\t|\r]', r'', self.desc)
