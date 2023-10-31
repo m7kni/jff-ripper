@@ -29,7 +29,7 @@ class JJFPost:
         if match:
             clean_date_str = match.group(1)
             try:
-                self.post_date = datetime.strptime(clean_date_str, "%B %d, %Y, %I:%M %p").strftime("%Y-%m-%d")
+                self.post_date = datetime.datetime.strptime(match.group(1), "%B %d, %Y, %I:%M %p").strftime("%Y-%m-%d")
             except Exception as e:
                 print(f"Warning: Could not parse date for post {self.post_id}. Error: {e}. Using post ID as could not parse date.")
                 self.post_date = self.post_id  # Using the whole post ID if the date cannot be parsed
