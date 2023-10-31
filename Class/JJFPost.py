@@ -28,7 +28,7 @@ class JJFPost:
         print(f"Debug: Trying to parse date string: {self.post_date_str}")
         
         try:
-            self.post_date = datetime.strptime(self.post_date_str, "%B %d, %Y, %I:%M %p").strftime("%Y-%m-%d")
+            self.post_date = parse(self.post_date_str.strip()).strftime("%Y-%m-%d")
         except Exception as e:
             print(f"Warning: Could not parse date for post {self.post_id}. Error: {e}. Using post ID as could not parse date.")
         self.post_date = self.post_id
