@@ -25,19 +25,12 @@ class JJFPost:
         self.post_soup = {}
 
     def prepdata(self):
-
         try:
-            # Use regular expression to extract date and time
-            date_match = re.search(r'(\w+ \d+, \d+, \d+:\d+ [APMapm]{2})', self.post_date_str)
-            if date_match:
-                clean_date_str = date_match.group(1)
-                self.post_date = parse(clean_date_str).strftime("%Y-%m-%d")
-            else:
-                print(f"Could not parse date from string: {self.post_date_str}")
-                self.post_date = 'unknown_date_' + ''.join(random.choices(string.ascii_uppercase + string.digits, k=3))  # Placeholder date with random characters
+            self.post_date = parse(self.post_date_str).strftime("%Y-%m-%d")
         except Exception as e:
-            print(f"An error occurred while parsing the date: {e}")
-            self.post_date = 'unknown_date_' + ''.join(random.choices(string.ascii_uppercase + string.digits, k=3))  # Placeholder date with random characters
+            print(f"Warning: Could not parse date for post {self.post_id}. Using 'unknown_date' instead.")
+            random_str = ''.join(random.choices(string.ascii_uppercase + string.digits, k=3))
+            self.post_date = f"unknown_date_{random_str}"
 
         self.desc = self.full_text[0:50].strip() + ('...' if len(self.full_text) > 45 else '')
         self.desc = re.sub(r'["|/|\:|?|$|!|<|>|~|`|(|)|@|#|$|%|^|&|*|\n|\t|\r]', r'', self.desc)
