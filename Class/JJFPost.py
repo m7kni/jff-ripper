@@ -40,7 +40,7 @@ class JJFPost:
         else:
             print(f"Warning: Could not parse date for post {self.post_id}. Using a hash as a unique identifier.")
             unique_content = self.full_text + self.name  # use text full text and name to generate unique_content ID
-            self.post_date = generate_content_hash(unique_content)
+            self.post_date = JJFPost.generate_content_hash(unique_content)
 
 
         self.desc = self.full_text[0:50].strip() + ('...' if len(self.full_text) > 45 else '')
