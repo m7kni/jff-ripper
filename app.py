@@ -187,6 +187,7 @@ def parse_and_save_content(html_content):
 
         print(post.name)
         print(post.post_date_str)
+        post.debug_print() # Print the post information to the console.
 
         class_values = post_element.attrs['class']
 
