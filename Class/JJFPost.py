@@ -24,11 +24,14 @@ class JJFPost:
         self.url_photo = []
 
         self.post_soup = {}
+        
 
     def generate_content_hash(content):
         return hashlib.md5(content.encode()).hexdigest()
-    
+
     def prepdata(self):
+        print(f"Current post attributes: {self.__dict__}")
+
         match = re.search(r'([a-zA-Z]+\s\d+,\s\d+,\s\d+:\d+\s[apmAPM]+)', self.post_date_str)
         if match:
             clean_date_str = match.group(1)
