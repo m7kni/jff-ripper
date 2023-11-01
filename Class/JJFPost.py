@@ -3,6 +3,7 @@ import datetime
 import re
 import random
 import string
+import hashlib
 from dateutil.parser import parse
 
 class JJFPost:
@@ -24,6 +25,9 @@ class JJFPost:
 
         self.post_soup = {}
 
+    def generate_content_hash(content):
+        return hashlib.md5(content.encode()).hexdigest()
+    
     def prepdata(self):
         match = re.search(r'([a-zA-Z]+\s\d+,\s\d+,\s\d+:\d+\s[apmAPM]+)', self.post_date_str)
         if match:
@@ -34,8 +38,9 @@ class JJFPost:
                 print(f"Warning: Could not parse date for post {self.post_id}. Error: {e}. Using post ID as could not parse date.")
                 self.post_date = self.post_id  # Using the whole post ID if the date cannot be parsed
         else:
-            print(f"Warning: Could not parse date for post {self.post_id}. Using post ID as could not parse date.")
-            self.post_date = self.post_id  # Using the whole post ID if the date cannot be parsed
+            print(f"Warning: Could not parse date for post {self.post_id}. Using a hash as a unique identifier.")
+            unique_content = self.full_text + self.name  # use text full text and name to generate unique_content ID
+            self.post_date = generate_content_hash(unique_content)
 
 
         self.desc = self.full_text[0:50].strip() + ('...' if len(self.full_text) > 45 else '')
